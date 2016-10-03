@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
-    "strings"
+	"strings"
 	"net/http"
 	"github.com/nlopes/slack"
 )

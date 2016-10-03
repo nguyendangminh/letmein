@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+    "strings"
 	"net/http"
 	"github.com/nlopes/slack"
 )
@@ -87,6 +88,7 @@ var errorMessage string = `
 `
 var errorEmail string = "Please enter a valid email"
 var errorServer string = "Something wrong happended, please try again later"
+var errorInvited string = "Invited this email already. Please check your mailbox."
 
 func inviteHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
@@ -105,14 +107,23 @@ func inviteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err := api.InviteToTeam(teamName, firstName, lastName, email)
-	if err != nil {
-		log.Println(err.Error())
-		msg := fmt.Sprintf(errorMessage, errorServer)
-		fmt.Fprintf(w, fmt.Sprintf(inviteTmpl, msg))
-		return
-	}
+    if err != nil {
+            log.Println(err.Error())
+            var msg string
+            if isInvitedError(err) {
+                    msg = fmt.Sprintf(errorMessage, errorInvited)
+            } else {
+                    msg = fmt.Sprintf(errorMessage, errorServer)
+            }
+            fmt.Fprintf(w, fmt.Sprintf(inviteTmpl, msg))
+            return
+    }
 
 	fmt.Fprintf(w, fmt.Sprintf(inviteTmpl, successMessage))
+}
+
+func isInvitedError(err error) bool {
+        return strings.Contains(err.Error(), "already_invited")
 }
 
 func init() {

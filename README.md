@@ -2,7 +2,7 @@
 
 Send Slack invitation automatically.
 
-![Slack, let me in](https://github.com/nguyendangminh/letmein/blob/master/Screen%20Shot%202016-05-18%20at%203.43.45%20PM.png)
+![Slack, let me in](https://github.com/nguyendangminh/letmein/blob/master/screenshot.png)
 
 ## Install
 ```
